@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "0.1.0"
+  version: "0.1.1"
 
 package:
   name: amica
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/a/amica/amica-${{ version }}.tar.gz
-  sha256: c0cb407c9e74328322125002d4673bc51c0d69b79b2d584233a266d0c00f015c
+  sha256: 2e3fbcd1610fb7109d5b2f4dbcc7d3f22a48d96c121fc3b3bbcabe14393e896f
 
 build:
   noarch: python
