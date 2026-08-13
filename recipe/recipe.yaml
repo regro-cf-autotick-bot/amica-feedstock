@@ -24,38 +24,46 @@ requirements:
     - wheel
   run:
     - python >=${{ python_min }}
-    - numpy >=1.21
-    - scipy >=1.7
-  run_constraints:
-    # amica-python is a separate AMICA implementation by another author that
-    # also installs a top-level `amica` module, so the two clobber each other
-    # in one environment. Declare them mutually exclusive.
-    - amica-python <0.0a0
+    # 0.1.1 is a pointer release: it ships no modules of its own and exists
+    # only to pull in the renamed package. numpy and scipy come via jamica.
+    - jamica >=0.2.0
 
 tests:
+  # There is no `amica` module to import any more -- `[tool.setuptools]
+  # packages = []` upstream. What this release promises is that installing
+  # `amica` still lands working code, so that is what the test checks.
   - python:
       imports:
-        - amica
+        - jamica
       python_version:
         - ${{ python_min }}.*
         - "*"
       pip_check: true
 
 about:
-  homepage: https://github.com/snesmaeili/amica
-  repository: https://github.com/snesmaeili/amica
-  documentation: https://snesmaeili.github.io/amica/
-  summary: Native Python implementation of AMICA for MNE-Python and scientific EEG workflows.
+  homepage: https://github.com/snesmaeili/jamica
+  repository: https://github.com/snesmaeili/jamica
+  documentation: https://snesmaeili.github.io/jamica/
+  summary: Renamed to jamica -- install `jamica` instead. This release installs it for you and ships no modules of its own.
   description: |
-    amica is a native Python implementation of AMICA (Adaptive Mixture
-    Independent Component Analysis), an ICA algorithm used for EEG source
-    separation. The canonical implementation is a Fortran program from UCSD,
-    usually driven from MATLAB or EEGLAB; this package provides an open,
-    extensible Python implementation that integrates with MNE-Python and offers
-    an optional JAX backend for CPU and GPU acceleration.
+    amica has been renamed to jamica. Install `jamica` instead:
 
-    JAX, MNE-Python, MNE-ICALabel and matplotlib are optional at runtime and are
-    not installed by default. For acceleration, install jax alongside amica.
+        conda install -c conda-forge jamica
+        python -c "from jamica import Amica, AmicaConfig, fit_ica"
+
+    This 0.1.1 release is a pointer. It contains no modules of its own -- it
+    only depends on jamica, so an existing `amica` install still ends up with
+    working code.
+
+    The rename resolves a namespace collision. The name `amica` installed a
+    top-level `amica` module, and so does amica-python, an independent
+    implementation of the same algorithm by another author; the two overwrote
+    each other in a shared environment. This release vacates the `amica` import
+    namespace rather than squatting on it, which is why the previous
+    `amica-python` run constraint is gone -- the two packages no longer share
+    any files and can be co-installed.
+
+    This is the final amica release. Development continues under jamica.
   license: BSD-3-Clause
   license_file: LICENSE
 
